@@ -1,46 +1,40 @@
 import streamlit as st
 import google.generativeai as genai
 
-# 1. Page Configuration
-st.set_page_config(page_title="AI Chatbot", layout="centered")
+st.set_page_config(page_title="AI Chatbot")
 st.title("🤖 Mera AI Assistant")
 
-# 2. API Key (Yahan apni key likhein ya sidebar mein option dein)
-API_KEY = st.secrets["GEMINI_KEY"]
-genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel("gemini-1.5-flash")
+API_KEY = st.secrets.get("GEMINI_KEY")
+if not API_KEY:
+    st.error("GEMINI_KEY missing")
+    st.stop()
 
-# 3. Chat History initialize karna
+genai.configure(api_key=API_KEY)
+
+model = genai.GenerativeModel("models/gemini-1.5-flash")
+
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
-# 4. Purani baatein screen par dikhana
-for message in st.session_state.messages:
-    with st.chat_message(message["role"]):
-        st.markdown(message["content"])
+for msg in st.session_state.messages:
+    with st.chat_message(msg["role"]):
+        st.markdown(msg["content"])
 
-# 5. User Input aur AI Response
-if prompt := st.chat_input("Yahan kuch likhein..."):
-    # User ka message save aur show karna
+if prompt := st.chat_input("Type here..."):
     st.session_state.messages.append({"role": "user", "content": prompt})
     with st.chat_message("user"):
         st.markdown(prompt)
 
-    # AI se jawab mangna
-   # AI se jawab mangna (SAFE WAY)
-try:
-    response = model.generate_content(prompt)
-    ai_response = response.text
-except Exception as e:
-    ai_response = f"❌ Error: {e}"
+    try:
+        response = model.generate_content(prompt)
+        ai_text = response.text
+    except Exception as e:
+        ai_text = f"❌ Gemini Error: {e}"
 
-
-    
-    # AI ka message save aur show karna
     with st.chat_message("assistant"):
-        st.markdown(ai_response)
-    st.session_state.messages.append({"role": "assistant", "content": ai_response})
+        st.markdown(ai_text)
 
+    st.session_state.messages.append({"role": "assistant", "content": ai_text})
 
 
 
