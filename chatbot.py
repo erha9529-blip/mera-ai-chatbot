@@ -32,13 +32,15 @@ try:
     response = model.generate_content(prompt)
     ai_response = response.text
 except Exception as e:
-    ai_response = "⚠️ AI response generate nahi ho pa raha. Thodi der baad try karein."
+    ai_response = f"❌ Error: {e}"
+
 
     
     # AI ka message save aur show karna
     with st.chat_message("assistant"):
         st.markdown(ai_response)
     st.session_state.messages.append({"role": "assistant", "content": ai_response})
+
 
 
 
