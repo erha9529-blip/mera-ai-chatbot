@@ -6,7 +6,7 @@ st.set_page_config(page_title="AI Chatbot", layout="centered")
 st.title("🤖 Mera AI Assistant")
 
 # 2. API Key (Yahan apni key likhein ya sidebar mein option dein)
-API_KEY = "AIzaSyDwhL3BN_7KPLoX4sol66x6M2I6Fust77I"
+API_KEY = st.secrets["GEMINI_KEY"]
 genai.configure(api_key=API_KEY)
 model = genai.GenerativeModel('gemini-1.5-flash')
 
@@ -34,4 +34,5 @@ if prompt := st.chat_input("Yahan kuch likhein..."):
     with st.chat_message("assistant"):
         st.markdown(ai_response)
     st.session_state.messages.append({"role": "assistant", "content": ai_response})
+
 
