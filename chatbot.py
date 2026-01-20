@@ -12,7 +12,7 @@ if not API_KEY:
 genai.configure(api_key=API_KEY)
 
 # ✅ USE THIS MODEL
-model = genai.GenerativeModel("gemini-1.5-flash")
+model = genai.GenerativeModel('gemini-1.5-flash-latest')
 
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -36,5 +36,6 @@ if prompt := st.chat_input("Yahan likhein..."):
         st.markdown(ai_text)
 
     st.session_state.messages.append({"role": "assistant", "content": ai_text})
+
 
 
