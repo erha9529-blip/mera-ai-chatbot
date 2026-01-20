@@ -8,7 +8,7 @@ st.title("🤖 Mera AI Assistant")
 # 2. API Key (Yahan apni key likhein ya sidebar mein option dein)
 API_KEY = st.secrets["GEMINI_KEY"]
 genai.configure(api_key=API_KEY)
-model = genai.GenerativeModel('gemini-1.5-pro')
+model = genai.GenerativeModel("gemini-1.5-flash")
 
 # 3. Chat History initialize karna
 if "messages" not in st.session_state:
@@ -34,6 +34,7 @@ if prompt := st.chat_input("Yahan kuch likhein..."):
     with st.chat_message("assistant"):
         st.markdown(ai_response)
     st.session_state.messages.append({"role": "assistant", "content": ai_response})
+
 
 
 
